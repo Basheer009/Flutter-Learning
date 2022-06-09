@@ -18,6 +18,10 @@ class _QuizzlerPageState extends State<QuizzlerPage> {
   //   )
   // ];
 
+  var questions = <String>[
+
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
