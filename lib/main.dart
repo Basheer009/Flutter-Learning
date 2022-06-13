@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/music_app.dart';
-import 'package:flutter_app/screens/quizzler.dart';
+import 'package:flutter_app/screens/quizzler/quizzler.dart';
 
 import 'dashboard.dart';
 import 'my_drawer_header.dart';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class QuizzlerPage extends StatefulWidget {
   const QuizzlerPage({Key? key}) : super(key: key);
@@ -8,19 +10,45 @@ class QuizzlerPage extends StatefulWidget {
 }
 
 class _QuizzlerPageState extends State<QuizzlerPage> {
-  void _question(String question, bool answer) {}
+  QuizBrain quizBrain = QuizBrain();
 
   var scoreKeeper = <Icon>[];
+  // or
   // List<Icon> scoreKeeper = [
-  //   const Icon(
-  //     Icons.check,
-  //     color: Colors.green,
-  //   )
-  // ];
 
-  var questions = <String>[
+  // int questionNumber = 0;
 
-  ];
+  void _checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getCorrectAnswer();
+
+    setState(() {
+      if (quizBrain.isFinished() == true) {
+
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz.',
+        ).show();
+        quizBrain.reset();
+        scoreKeeper = [];
+      }
+
+      else {
+        if (userPickedAnswer == correctAnswer) {
+          scoreKeeper.add(const Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
+        } else {
+          scoreKeeper.add(const Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
+        }
+        quizBrain.nextQuestion();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,15 +58,15 @@ class _QuizzlerPageState extends State<QuizzlerPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Expanded(
+          Expanded(
             flex: 5,
             child: Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: Center(
                 child: Text(
-                  'This is where the question text will go.',
+                  quizBrain.getQuestionText(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25.0,
                     color: Colors.white,
                   ),
@@ -48,7 +76,7 @@ class _QuizzlerPageState extends State<QuizzlerPage> {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15.0),
               child: Container(
                 color: Colors.green,
                 child: TextButton(
@@ -60,11 +88,7 @@ class _QuizzlerPageState extends State<QuizzlerPage> {
                     ),
                   ),
                   onPressed: () {
-                    setState(() {
-                      scoreKeeper.add(
-                        const Icon(Icons.check, color: Colors.green),
-                      );
-                    });
+                    _checkAnswer(true);
                   },
                 ),
               ),
@@ -84,11 +108,7 @@ class _QuizzlerPageState extends State<QuizzlerPage> {
                     ),
                   ),
                   onPressed: () {
-                    setState(() {
-                      scoreKeeper.add(
-                        const Icon(Icons.close, color: Colors.red),
-                      );
-                    });
+                    _checkAnswer(true);
                   },
                 ),
               ),
