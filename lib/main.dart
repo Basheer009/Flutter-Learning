@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/music_app.dart';
-import 'package:flutter_app/screens/quizzler/quizzler.dart';
+import 'package:flutter_app/apps/bmi/bmi.dart';
+import 'package:flutter_app/apps/music_app.dart';
+import 'package:flutter_app/apps/quizzler/quizzler.dart';
 
 import 'dashboard.dart';
 import 'my_drawer_header.dart';
 import 'notifications.dart';
 import 'privacy_policy.dart';
-import 'screens/ask_me_anything.dart';
-import 'screens/bi_card.dart';
-import 'screens/columns_and_rows.dart';
-import 'screens/dice_app.dart';
-import 'screens/images_and_snack_bar.dart';
+import 'apps/ask_me_anything.dart';
+import 'apps/bi_card.dart';
+import 'apps/columns_and_rows.dart';
+import 'apps/destini/destini.dart';
+import 'apps/dice_app.dart';
+import 'apps/images_and_snack_bar.dart';
 import 'send_feedback.dart';
 import 'settings.dart';
 
@@ -78,6 +80,15 @@ class _HomePageState extends State<HomePage> {
       container = const QuizzlerPage();
       title = const Text("Quizzler App");
       appBarColor = Colors.grey.shade900;
+      // _ifHideAppBar = true;
+    } else if (currentPage == DrawerSections.destini) {
+      container = const DestiniPage();
+      title = const Text("Destini App");
+      _ifHideAppBar = true;
+    } else if (currentPage == DrawerSections.bmi) {
+      container = const BMIPage();
+      title = const Text("BMI CALCULATOR");
+      appBarColor = Colors.black;
       // _ifHideAppBar = true;
     } else if (currentPage == DrawerSections.settings) {
       container = SettingsPage();
@@ -170,18 +181,22 @@ class _HomePageState extends State<HomePage> {
               currentPage == DrawerSections.musicApp ? true : false),
           menuItem(8, "Quizzler App", Icons.quiz_outlined,
               currentPage == DrawerSections.quizzler ? true : false),
+          menuItem(9, "Destini App", Icons.quiz_outlined,
+              currentPage == DrawerSections.destini ? true : false),
+          menuItem(10, "BMI CALCULATOR", Icons.calculate_outlined,
+              currentPage == DrawerSections.bmi ? true : false),
           const Divider(),
-          menuItem(9, "Settings", Icons.settings_outlined,
+          menuItem(11, "Settings", Icons.settings_outlined,
               currentPage == DrawerSections.settings ? true : false),
-          menuItem(10, "Notifications", Icons.notifications_outlined,
+          menuItem(12, "Notifications", Icons.notifications_outlined,
               currentPage == DrawerSections.notifications ? true : false),
           const Divider(),
-          menuItem(11, "Privacy policy", Icons.privacy_tip_outlined,
+          menuItem(13, "Privacy policy", Icons.privacy_tip_outlined,
               currentPage == DrawerSections.privacyPolicy ? true : false),
-          menuItem(12, "Send feedback", Icons.feedback_outlined,
+          menuItem(14, "Send feedback", Icons.feedback_outlined,
               currentPage == DrawerSections.sendFeedback ? true : false),
           menuItemAbout(
-              13,
+              15,
               "About - Long Press",
               Icons.info_outline,
               currentPage == DrawerSections.about ? true : false,
@@ -223,14 +238,18 @@ class _HomePageState extends State<HomePage> {
             } else if (id == 8) {
               currentPage = DrawerSections.quizzler;
             } else if (id == 9) {
-              currentPage = DrawerSections.settings;
+              currentPage = DrawerSections.destini;
             } else if (id == 10) {
-              currentPage = DrawerSections.notifications;
+              currentPage = DrawerSections.bmi;
             } else if (id == 11) {
-              currentPage = DrawerSections.privacyPolicy;
+              currentPage = DrawerSections.settings;
             } else if (id == 12) {
-              currentPage = DrawerSections.sendFeedback;
+              currentPage = DrawerSections.notifications;
             } else if (id == 13) {
+              currentPage = DrawerSections.privacyPolicy;
+            } else if (id == 14) {
+              currentPage = DrawerSections.sendFeedback;
+            } else if (id == 15) {
               currentPage = DrawerSections.about;
             }
           });
@@ -330,6 +349,8 @@ enum DrawerSections {
   askMeAnything,
   musicApp,
   quizzler,
+  destini,
+  bmi,
   settings,
   notifications,
   privacyPolicy,
