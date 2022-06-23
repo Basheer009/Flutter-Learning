@@ -4,16 +4,16 @@ import 'package:flutter_app/apps/bmi/bmi.dart';
 import 'package:flutter_app/apps/music_app.dart';
 import 'package:flutter_app/apps/quizzler/quizzler.dart';
 
-import 'dashboard.dart';
-import 'my_drawer_header.dart';
-import 'notifications.dart';
-import 'privacy_policy.dart';
 import 'apps/ask_me_anything.dart';
 import 'apps/bi_card.dart';
 import 'apps/columns_and_rows.dart';
 import 'apps/destini/destini.dart';
 import 'apps/dice_app.dart';
 import 'apps/images_and_snack_bar.dart';
+import 'dashboard.dart';
+import 'my_drawer_header.dart';
+import 'notifications.dart';
+import 'privacy_policy.dart';
 import 'send_feedback.dart';
 import 'settings.dart';
 
@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
+      // theme: const HomePage().createState().useNormalTheme ? null :  ThemeData.dark(),
       home: HomePage(),
     );
   }
@@ -43,6 +44,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var currentPage = DrawerSections.dashboard;
 
+  // bool useNormalTheme = true;
   @override
   Widget build(BuildContext context) {
     Widget container = DashboardPage();
@@ -50,6 +52,7 @@ class _HomePageState extends State<HomePage> {
     Text title = const Text("Basheer App");
     bool centerTitle = false;
     bool _ifHideAppBar = false;
+
     if (currentPage == DrawerSections.dashboard) {
       container = DashboardPage();
       title = const Text("Dashboard");
@@ -86,9 +89,10 @@ class _HomePageState extends State<HomePage> {
       title = const Text("Destini App");
       _ifHideAppBar = true;
     } else if (currentPage == DrawerSections.bmi) {
-      container = const BMIPage();
-      title = const Text("BMI CALCULATOR");
-      appBarColor = Colors.black;
+      // container = const BMIPage();
+      // title = const Text("BMI CALCULATOR");
+      // appBarColor = Colors.black;
+      // useNormalTheme = false;
       // _ifHideAppBar = true;
     } else if (currentPage == DrawerSections.settings) {
       container = SettingsPage();
@@ -124,24 +128,26 @@ class _HomePageState extends State<HomePage> {
 
     }
     return Scaffold(
-      appBar: _ifHideAppBar ? null :  AppBar(
-        backgroundColor: appBarColor,
-        // title: const Text("Basheer App"),
-        // leading: IconButton(
-        //   onPressed: () {},
-        //   icon: const Icon(Icons.list),
-        // ),
-        title: title,
-        // centerTitle: currentPage == DrawerSections.lesson_4 ? true : false,
-        centerTitle: centerTitle,
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.settings),
-        //     onPressed: () {},
-        //   ),
-        //   // add more IconButton
-        // ],
-      ),
+      appBar: _ifHideAppBar
+          ? null
+          : AppBar(
+              backgroundColor: appBarColor,
+              // title: const Text("Basheer App"),
+              // leading: IconButton(
+              //   onPressed: () {},
+              //   icon: const Icon(Icons.list),
+              // ),
+              title: title,
+              // centerTitle: currentPage == DrawerSections.lesson_4 ? true : false,
+              centerTitle: centerTitle,
+              // actions: [
+              //   IconButton(
+              //     icon: const Icon(Icons.settings),
+              //     onPressed: () {},
+              //   ),
+              //   // add more IconButton
+              // ],
+            ),
       body: container,
       drawer: Drawer(
         child: SingleChildScrollView(
@@ -196,19 +202,21 @@ class _HomePageState extends State<HomePage> {
           menuItem(14, "Send feedback", Icons.feedback_outlined,
               currentPage == DrawerSections.sendFeedback ? true : false),
           menuItemAbout(
-              15,
-              "About - Long Press",
-              Icons.info_outline,
-              currentPage == DrawerSections.about ? true : false,
-              'Basheer App',
-              '1.0',
-              const Icon(Icons.adb),
-              '© 2022 Basheer Inc.', [
-            const Padding(
-              padding: EdgeInsets.only(top: 20.0),
-              child: Text('Hallo from here :)'),
-            )
-          ]),
+            15,
+            "About - Long Press",
+            Icons.info_outline,
+            currentPage == DrawerSections.about ? true : false,
+            'Basheer App',
+            '1.0',
+            const Icon(Icons.adb),
+            '© 2022 Basheer Inc.',
+            [
+              const Padding(
+                padding: EdgeInsets.only(top: 20.0),
+                child: Text('Hallo from here :)'),
+              )
+            ],
+          ),
         ],
       ),
     );
@@ -241,6 +249,12 @@ class _HomePageState extends State<HomePage> {
               currentPage = DrawerSections.destini;
             } else if (id == 10) {
               currentPage = DrawerSections.bmi;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BMIPage(),
+                ),
+              );
             } else if (id == 11) {
               currentPage = DrawerSections.settings;
             } else if (id == 12) {
