@@ -1,15 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/apps/bitcoin/bitcoin_main.dart';
 import 'package:flutter_app/apps/bmi/bmi.dart';
-import 'package:flutter_app/apps/music_app.dart';
+import 'package:flutter_app/apps/clima/weather_main.dart';
 import 'package:flutter_app/apps/quizzler/quizzler.dart';
+import 'package:flutter_app/apps/test/test.dart';
+import 'package:flutter_app/apps/xylophone/music_app.dart';
 
-import 'apps/ask_me_anything.dart';
-import 'apps/bi_card.dart';
-import 'apps/columns_and_rows.dart';
 import 'apps/destini/destini.dart';
-import 'apps/dice_app.dart';
-import 'apps/images_and_snack_bar.dart';
+import 'apps/dicee/dice_app.dart';
+import 'apps/flash_chat/chat_main.dart';
+import 'apps/iamrichandiampoor/columns_and_rows.dart';
+import 'apps/iamrichandiampoor/images_and_snack_bar.dart';
+import 'apps/magic8ball/ask_me_anything.dart';
+import 'apps/micard/bi_card.dart';
 import 'dashboard.dart';
 import 'my_drawer_header.dart';
 import 'notifications.dart';
@@ -29,6 +32,10 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       // theme: const HomePage().createState().useNormalTheme ? null :  ThemeData.dark(),
+      // theme: ThemeData.dark().copyWith(
+      //   primaryColor: const Color(0xFF0A0E21),
+      //   scaffoldBackgroundColor: const Color(0xFF0A0E21),
+      // ),
       home: HomePage(),
     );
   }
@@ -41,10 +48,16 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  var currentPage = DrawerSections.dashboard;
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  var currentPage = DrawerSections.chat;
+  late TabController tabController;
 
-  // bool useNormalTheme = true;
+  @override
+  void initState() {
+    tabController = TabController(length: 3, vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget container = DashboardPage();
@@ -52,17 +65,21 @@ class _HomePageState extends State<HomePage> {
     Text title = const Text("Basheer App");
     bool centerTitle = false;
     bool _ifHideAppBar = false;
+    bool _ifShowAppBarTabs = false;
 
     if (currentPage == DrawerSections.dashboard) {
       container = DashboardPage();
       title = const Text("Dashboard");
       appBarColor = Colors.teal;
+      _ifShowAppBarTabs = true;
     } else if (currentPage == DrawerSections.imagesAndSnackBar) {
       container = const ImagesAndSnackBar();
       title = const Text("Images And SnackBar");
+      _ifShowAppBarTabs = true;
     } else if (currentPage == DrawerSections.columnsAndRows) {
       container = const ColumnsAndRows();
       title = const Text("Columns And Rows");
+      _ifShowAppBarTabs = true;
     } else if (currentPage == DrawerSections.biCard) {
       container = const BiCard();
       title = const Text("Bi Card");
@@ -89,11 +106,24 @@ class _HomePageState extends State<HomePage> {
       title = const Text("Destini App");
       _ifHideAppBar = true;
     } else if (currentPage == DrawerSections.bmi) {
-      // container = const BMIPage();
-      // title = const Text("BMI CALCULATOR");
-      // appBarColor = Colors.black;
-      // useNormalTheme = false;
-      // _ifHideAppBar = true;
+      container = const BMIPage();
+      _ifHideAppBar = true;
+    } else if (currentPage == DrawerSections.weather) {
+      container = const WeatherPage();
+      title = const Text("Weather App");
+      _ifHideAppBar = true;
+    } else if (currentPage == DrawerSections.bitcoin) {
+      container =  const BitcoinTickerPage();
+      title = const Text("Bitcoin App");
+      _ifHideAppBar = true;
+    } else if (currentPage == DrawerSections.chat) {
+      container =  const FlashChat();
+      title = const Text("Flash Chat App");
+      _ifHideAppBar = true;
+    } else if (currentPage == DrawerSections.test) {
+      container = TestPage();
+      title = const Text("Test");
+      _ifHideAppBar = true;
     } else if (currentPage == DrawerSections.settings) {
       container = SettingsPage();
       title = const Text("Settings");
@@ -108,23 +138,6 @@ class _HomePageState extends State<HomePage> {
       title = const Text("Send Feedback");
     } else if (currentPage == DrawerSections.about) {
       // currentPage = currentPage;
-      // container = const AboutListTile(
-      //   icon: Icon(
-      //     Icons.info,
-      //   ),
-      //   child: Text('About app'),
-      //   applicationIcon: Icon(
-      //     Icons.local_play,
-      //   ),
-      //   applicationName: 'Basheer App',
-      //   applicationVersion: '1.0.0',
-      //   applicationLegalese: '© 2022 Basheer Inc.',
-      //   aboutBoxChildren: [
-      //     ///Content goes here...
-      //     Text('Hallo'),
-      //   ],
-      // );
-      // title = const Text("About");
 
     }
     return Scaffold(
@@ -132,21 +145,9 @@ class _HomePageState extends State<HomePage> {
           ? null
           : AppBar(
               backgroundColor: appBarColor,
-              // title: const Text("Basheer App"),
-              // leading: IconButton(
-              //   onPressed: () {},
-              //   icon: const Icon(Icons.list),
-              // ),
               title: title,
-              // centerTitle: currentPage == DrawerSections.lesson_4 ? true : false,
               centerTitle: centerTitle,
-              // actions: [
-              //   IconButton(
-              //     icon: const Icon(Icons.settings),
-              //     onPressed: () {},
-              //   ),
-              //   // add more IconButton
-              // ],
+              bottom: _ifShowAppBarTabs ? getTabBar() : null,
             ),
       body: container,
       drawer: Drawer(
@@ -159,6 +160,30 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  TabBar getTabBar() {
+    return TabBar(
+      indicatorColor: Colors.white,
+      tabs: const <Tab>[
+        Tab(
+          text: 'Dashboard',
+        ),
+        Tab(
+          text: 'Images',
+        ),
+        Tab(
+          text: 'Columns & Row',
+        ),
+      ],
+      // setup the controller
+      controller: tabController,
+      onTap: (index) {
+        setState(() {
+          currentPage = DrawerSections.values[index];
+        });
+      },
     );
   }
 
@@ -191,18 +216,26 @@ class _HomePageState extends State<HomePage> {
               currentPage == DrawerSections.destini ? true : false),
           menuItem(10, "BMI CALCULATOR", Icons.calculate_outlined,
               currentPage == DrawerSections.bmi ? true : false),
+          menuItem(11, "Weather App", Icons.sunny_snowing,
+              currentPage == DrawerSections.weather ? true : false),
+          menuItem(12, "Bitcoin Ticker App", Icons.currency_bitcoin,
+              currentPage == DrawerSections.bitcoin ? true : false),
+          menuItem(13, "Flash Chat App", Icons.chat,
+              currentPage == DrawerSections.chat ? true : false),
           const Divider(),
-          menuItem(11, "Settings", Icons.settings_outlined,
+          menuItem(14, "Test", Icons.android,
+              currentPage == DrawerSections.test ? true : false),
+          menuItem(15, "Settings", Icons.settings_outlined,
               currentPage == DrawerSections.settings ? true : false),
-          menuItem(12, "Notifications", Icons.notifications_outlined,
+          menuItem(16, "Notifications", Icons.notifications_outlined,
               currentPage == DrawerSections.notifications ? true : false),
           const Divider(),
-          menuItem(13, "Privacy policy", Icons.privacy_tip_outlined,
+          menuItem(17, "Privacy policy", Icons.privacy_tip_outlined,
               currentPage == DrawerSections.privacyPolicy ? true : false),
-          menuItem(14, "Send feedback", Icons.feedback_outlined,
+          menuItem(18, "Send feedback", Icons.feedback_outlined,
               currentPage == DrawerSections.sendFeedback ? true : false),
           menuItemAbout(
-            15,
+            19,
             "About - Long Press",
             Icons.info_outline,
             currentPage == DrawerSections.about ? true : false,
@@ -249,21 +282,23 @@ class _HomePageState extends State<HomePage> {
               currentPage = DrawerSections.destini;
             } else if (id == 10) {
               currentPage = DrawerSections.bmi;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const BMIPage(),
-                ),
-              );
             } else if (id == 11) {
-              currentPage = DrawerSections.settings;
+              currentPage = DrawerSections.weather;
             } else if (id == 12) {
-              currentPage = DrawerSections.notifications;
+              currentPage = DrawerSections.bitcoin;
             } else if (id == 13) {
-              currentPage = DrawerSections.privacyPolicy;
+              currentPage = DrawerSections.chat;
             } else if (id == 14) {
-              currentPage = DrawerSections.sendFeedback;
+              currentPage = DrawerSections.test;
             } else if (id == 15) {
+              currentPage = DrawerSections.settings;
+            } else if (id == 16) {
+              currentPage = DrawerSections.notifications;
+            } else if (id == 17) {
+              currentPage = DrawerSections.privacyPolicy;
+            } else if (id == 18) {
+              currentPage = DrawerSections.sendFeedback;
+            } else if (id == 19) {
               currentPage = DrawerSections.about;
             }
           });
@@ -365,6 +400,10 @@ enum DrawerSections {
   quizzler,
   destini,
   bmi,
+  weather,
+  bitcoin,
+  chat,
+  test,
   settings,
   notifications,
   privacyPolicy,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class ImagesAndSnackBar extends StatelessWidget {
   const ImagesAndSnackBar({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,6 +51,7 @@ class ImagesAndSnackBar extends StatelessWidget {
               image: AssetImage("images/diamond.png"),
             ),
           ),
+
         ],
       ),
     );

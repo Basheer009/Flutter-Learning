@@ -27,13 +27,23 @@ class _InputPageState extends State<InputPage> {
   int weight = 60;
   int age = 20;
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BMI CALCULATOR'),
-        // backgroundColor: Color(0xFF0A0E21),
+        title: const Text('BMI CALCULATOR'),
+        backgroundColor: Color(0xFF0A0E21),
         centerTitle: true,
+        leading: InkWell(
+          child: const Icon(
+              Icons.menu
+          ),
+          onTap: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -167,7 +177,8 @@ class _InputPageState extends State<InputPage> {
                           ],
                         ),
                       ],
-                    ), onPress: () {  },
+                    ),
+                    onPress: () {  },
                   ),
                 ),
                 Expanded(
@@ -239,3 +250,4 @@ class _InputPageState extends State<InputPage> {
     );
   }
 }
+

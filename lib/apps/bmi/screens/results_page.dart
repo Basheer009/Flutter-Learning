@@ -4,21 +4,30 @@ import '../components/bottom_button.dart';
 import '../components/reusable_card.dart';
 import '../constants.dart';
 
-class ResultsPage extends StatelessWidget {
-  ResultsPage(
-      {required this.interpretation,
+class ResultsPage extends StatefulWidget {
+  const ResultsPage(
+      {Key? key,
+      required this.interpretation,
       required this.bmiResult,
-      required this.resultText});
+      required this.resultText})
+      : super(key: key);
 
   final String bmiResult;
   final String resultText;
   final String interpretation;
 
   @override
+  State<ResultsPage> createState() => _ResultsPageState();
+}
+
+class _ResultsPageState extends State<ResultsPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('BMI CALCULATOR'),
+        backgroundColor: Color(0xFF0A0E21),
+        centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -28,9 +37,11 @@ class ResultsPage extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(15.0),
               alignment: Alignment.bottomLeft,
-              child: Text(
-                'Your Result',
-                style: kTitleTextStyle,
+              child: const Center(
+                child: Text(
+                  'Your Result',
+                  style: kTitleTextStyle,
+                ),
               ),
             ),
           ),
@@ -43,20 +54,21 @@ class ResultsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    resultText.toUpperCase(),
+                    widget.resultText.toUpperCase(),
                     style: kResultTextStyle,
                   ),
                   Text(
-                    bmiResult,
+                    widget.bmiResult,
                     style: kBMITextStyle,
                   ),
                   Text(
-                    interpretation,
+                    widget.interpretation,
                     textAlign: TextAlign.center,
                     style: kBodyTextStyle,
                   ),
                 ],
-              ), onPress: () {  },
+              ),
+              onPress: () {},
             ),
           ),
           BottomButton(
